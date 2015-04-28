@@ -50,5 +50,11 @@ group :development, :test do
 
   # Guard-rspec for automated rspec testing.
   gem 'guard-rspec', require: false
+
+  # Guard-livereload for automated browser reload on view changes.
+  gem 'guard-livereload'
+
+  # Pry for debbuging errors
+  gem 'pry'
 end
 

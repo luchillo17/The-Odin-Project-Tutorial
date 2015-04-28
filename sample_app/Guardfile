@@ -2,8 +2,8 @@
 # More info at https://github.com/guard/guard#readme
 
 ## Uncomment and set this to only include directories you want to watch
-# directories %w(app lib config test spec features)
-directories %w(app lib config spec)
+# directories %w(app lib config test spec)
+# directories %w(. app lib config spec)
 
 ## Uncomment to clear the screen before every task
 clearing :on
@@ -33,7 +33,7 @@ clearing :on
 #  * zeus: 'zeus rspec' (requires the server to be started separately)
 #  * 'just' rspec: 'rspec'
 
-guard :rspec, cmd: "rspec" do
+guard :rspec, cmd: "bundle exec rspec spec/controllers" do
   require "guard/rspec/dsl"
   dsl = Guard::RSpec::Dsl.new(self)
 
@@ -43,7 +43,7 @@ guard :rspec, cmd: "rspec" do
   rspec = dsl.rspec
   watch(rspec.spec_helper) { rspec.spec_dir }
   watch(rspec.spec_support) { rspec.spec_dir }
-  watch(rspec.spec_files)
+  watch(rspec.spec_files) { rspec.spec_dir }
 
   # Ruby files
   ruby = dsl.ruby
@@ -62,6 +62,12 @@ guard :rspec, cmd: "rspec" do
     ]
   end
 
+  # watch(rails.views) do |m|
+  #   [
+  #     rspec.spec.("controllers/#{m[1]}_controller")
+  #   ]
+  # end
+
   # Rails config changes
   watch(rails.spec_helper)     { rspec.spec_dir }
   watch(rails.routes)          { "#{rspec.spec_dir}/routing" }
@@ -75,4 +81,7 @@ guard :rspec, cmd: "rspec" do
   watch(%r{^spec/acceptance/steps/(.+)_steps\.rb$}) do |m|
     Dir[File.join("**/#{m[1]}.feature")][0] || "spec/acceptance"
   end
+
+  # My watch's
+  # watch(%r{^app/views/}){ |m| "spec"}
 end
