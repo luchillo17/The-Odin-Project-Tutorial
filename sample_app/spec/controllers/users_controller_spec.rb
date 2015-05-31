@@ -18,7 +18,7 @@ require 'rails_helper'
 # Message expectations are only used when there is no simpler way to specify
 # that an instance is receiving a specific message.
 
-RSpec.describe UsersController, type: :controller, focus:true do
+RSpec.describe UsersController, type: :controller, focus: false do
 
   # This should return the minimal set of attributes required to create a valid
   # User. As you add validations to User, be sure to
@@ -35,12 +35,6 @@ RSpec.describe UsersController, type: :controller, focus:true do
   # in order to pass any filters (e.g. authentication) defined in
   # UsersController. Be sure to keep this updated too.
   let(:valid_session) { {} }
-
-  render_views
-
-  before :all do
-    @base_title = "Ruby on Rails Tutorial Sample App"
-  end
 
   describe "GET #index" do
     it "assigns all users as @users" do
@@ -59,12 +53,12 @@ RSpec.describe UsersController, type: :controller, focus:true do
   end
 
   describe "GET #new" do
+  	render_views
+  	it 'response have according tittle' do
+  		get :new, {}, valid_session
+  	  assert_select('title', full_title('New User'))
+  	end
 
-    it 'shows an according title' do
-      get :new, {}, valid_session
-      expect(response).to have_http_status(:success)
-      assert_select "title", full_title("New User")
-    end
     it "assigns a new user as @user" do
       get :new, {}, valid_session
       expect(assigns(:user)).to be_a_new(User)

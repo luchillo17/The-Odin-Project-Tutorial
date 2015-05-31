@@ -1,14 +1,21 @@
 require 'rails_helper'
 
-RSpec.describe "users/new", type: :view do
+RSpec.describe "users/new", type: :view, focus: false do
   before(:each) do
-    assign(:user, User.new())
+    assign(:user, User.new(
+      :name => "MyString",
+      :email => "MyString@example.com"
+    ))
   end
 
   it "renders new user form" do
     render
-    # expect(response).to have_http_status(200)
+
     assert_select "form[action=?][method=?]", users_path, "post" do
+
+      assert_select "input#user_name[name=?]", "user[name]"
+
+      assert_select "input#user_email[name=?]", "user[email]"
     end
   end
 end

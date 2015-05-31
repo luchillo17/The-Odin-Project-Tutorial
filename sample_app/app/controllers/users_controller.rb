@@ -4,14 +4,14 @@ class UsersController < ApplicationController
   # GET /users
   # GET /users.json
   def index
-    @title = 'Users'
+    @title = 'Users List'
     @users = User.all
   end
 
   # GET /users/1
   # GET /users/1.json
   def show
-    @title ='User'
+    @title = 'Show User'
   end
 
   # GET /users/new
@@ -31,13 +31,20 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
 
     respond_to do |format|
+    # begin
       if @user.save
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
+        @title = 'New User'
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
+      # rescue ActiveRecord::RecordNotUnique
+      #   @title = 'New User'
+      #   format.html { render :new, notice: 'Duplicated field' }
+      #   format.json { render json: @user.errors, status: :unprocessable_entity }
+      # end
     end
   end
 
@@ -73,6 +80,6 @@ class UsersController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def user_params
-      params[:user]
+      params.require(:user).permit(:name, :email)
     end
 end
