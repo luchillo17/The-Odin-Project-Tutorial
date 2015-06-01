@@ -24,7 +24,10 @@ RSpec.describe User, type: :model, focus: false do
 	end
 
 	before :each do
-		@user = User.new name:  'luchillo', email: 'luchillo17@gmail.com'
+		@user = User.new	name:  'luchillo',
+											email: 'luchillo17@gmail.com', 
+											password: 'belorofonte', 
+											password_confirmation: 'belorofonte'
 	end
 
 	context "Attribute validation" do
@@ -74,6 +77,16 @@ RSpec.describe User, type: :model, focus: false do
 				duplicated_user.email = duplicated_user.email.upcase
 				@user.save
 				expect(duplicated_user).not_to be_valid
+			end
+
+			it 'password should be present (nonblank)' do
+				@user.password = @user.password_confirmation = ' '*6
+				expect(@user).not_to be_valid
+			end
+
+			it 'password should have minimum length' do
+				@user.password = @user.password_confirmation = 'a'*5
+				expect(@user).not_to be_valid
 			end
 		end
 	end

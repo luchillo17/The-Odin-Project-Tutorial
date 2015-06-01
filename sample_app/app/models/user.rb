@@ -11,6 +11,11 @@ class User < ActiveRecord::Base
 										length: {maximum: 255},
 										format: {with: VALID_EMAIL_REGEX}
 
+	has_secure_password
+	validates :password,	presence: true,
+												length: {minimum: 6}
+	 
+
 	def save(*args)
 		super
 	rescue ActiveRecord::RecordNotUnique => error
