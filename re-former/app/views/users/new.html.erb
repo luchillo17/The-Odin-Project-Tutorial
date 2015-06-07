@@ -1,0 +1,72 @@
+<h1>New User</h1>
+
+<%= render 'form' %>
+<!-- 
+<= form_for(@user) do |f| %>
+		<div class="field">
+			<= f.label :username %>
+			<= f.text_field :username, placeholder: 'YourUser' %>
+		</div>
+		
+		<div class="field">
+			<= f.label :email %>
+			<= f.email_field :email, placeholder: 'youremail@example.com' %>
+		</div>
+
+		<div class="field">
+			<= f.label :password %>
+			<= f.password_field :password, placeholder: 'YoUrPaSsWorD' %>
+		</div>
+
+		<div class="actions">
+			<= f.submit :create %>
+		</div>
+< end %>
+
+ --><!-- 
+<= form_tag('/users') do %>
+	<div class="field">
+		<= label_tag 'username' %>
+		<= text_field_tag 'user[username]' %>
+	</div>
+
+	<div class="field">
+		<= label_tag 'email' %>
+		<= email_field_tag 'user[email]' %>
+	</div>
+
+	<div class="field">
+		<= label_tag 'password' %>
+		<= password_field_tag 'user[password]' %>
+	</div>
+
+	<div class="actions">
+		<= submit_tag 'create' %>
+	</div>
+< end %>
+ -->
+
+<!-- <form action="/users" method="post" accept-charset="utf-8">
+	<input type="hidden" name="utf-8" value="✓">
+	<input type="hidden" name="authenticity_token" value="<= form_authenticity_token %>">
+
+	<div class="field">
+		<label for="username">User Name: </label>
+		<input type="text" name="user[username]" value="" placeholder="username">
+	</div>
+
+	<div class="field">
+		<label for="email">Email: </label>
+		<input type="email" name="user[email]" value="" placeholder="email">
+	</div>
+
+	<div class="field">
+		<label for="password">Password: </label>
+		<input type="password" name="user[password]" value="" placeholder="password">
+	</div>
+	<div class="actions">
+		<input type="submit" name="commit" value="create">
+	</div>
+</form> -->
+
+<%= link_to 'Back', users_path %>
