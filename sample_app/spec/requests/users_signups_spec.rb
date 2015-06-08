@@ -30,6 +30,7 @@ RSpec.describe "UsersSignups", type: :request do
 		  it "render show page on valid signup" do
 				expect{post_via_redirect(users_path, user: valid_user)}.to change{ User.count }
 				assert_template "users/show"
+				expect(flash).not_to be_empty
 			end
 		end
 		context "with invalid params" do	
@@ -39,7 +40,7 @@ RSpec.describe "UsersSignups", type: :request do
 				expect{post(users_path, user: invalid_user)}.not_to change{ User.count }
 				assert_template 'users/new'
 				assert_select 'div#error_explanation'
-				assert_select '.field_with_errors'
+				assert_select 'div.field_with_errors'
 			end
 		end
 	end

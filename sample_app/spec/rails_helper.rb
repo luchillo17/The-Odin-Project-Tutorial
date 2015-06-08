@@ -4,6 +4,12 @@ require 'spec_helper'
 require File.expand_path('../../config/environment', __FILE__)
 require 'rspec/rails'
 include ApplicationHelper
+
+module AssertSelectRoot
+  def document_root_element
+    html_document.root
+  end
+end
 # Add additional requires below this line. Rails is not loaded until this point!
 
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -26,6 +32,9 @@ include ApplicationHelper
 ActiveRecord::Migration.maintain_test_schema!
 
 RSpec.configure do |config|
+
+  # Fix for the assert_select error in requests specs.
+  config.include AssertSelectRoot, :type => :request
   # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
   config.fixture_path = "#{::Rails.root}/spec/fixtures"
 
