@@ -11,7 +11,7 @@ class UsersController < ApplicationController
   # GET /users/1
   # GET /users/1.json
   def show
-    @title = 'Show User'
+    @title = @user.name
   end
 
   # GET /users/new
