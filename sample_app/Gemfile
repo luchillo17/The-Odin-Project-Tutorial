@@ -42,31 +42,37 @@ gem 'passenger', '~> 5.0.9'
 gem 'rails_12factor', group: :production
 
 group :development, :test do
-  # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+	# Call 'byebug' anywhere in the code to stop execution and get a debugger console
+	gem 'byebug'
 
-  # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+	# Access an IRB console on exception pages or by using <%= console %> in views
+	gem 'web-console', '~> 2.0'
 
-  # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
-  gem 'spring'
+	# Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
+	gem 'spring'
 
-   # Rspec
-  gem 'rspec-rails'
+	 # Rspec
+	gem 'rspec-rails'
 
-  # Progress bar for Rspec, watch .rspec file in home
-  gem 'fuubar'
+	# Progress bar for Rspec, watch .rspec file in home
+	gem 'fuubar'
 
-  # Factory for fixtures (Data for tests.)
-  gem 'factory_girl'
+	# Factory for fixtures (Data for tests.)
+	gem 'factory_girl_rails'
 
-  # Guard-rspec for automated rspec testing.
-  gem 'guard-rspec', require: false
+	# Simulate user interaction with browser.
+	gem 'capybara'
 
-  # Guard-livereload for automated browser reload on view changes.
-  gem 'guard-livereload', require: false
+	# Used to launch clients like the browser or emails (add save_and_open_page anywhere in a test.)
+	gem 'launchy'
 
-  # Pry for debbuging errors
-  gem 'pry'
+	# Guard-rspec for automated rspec testing.
+	gem 'guard-rspec', require: false
+
+	# Guard-livereload for automated browser reload on view changes.
+	gem 'guard-livereload', require: false
+
+	# Pry for debbuging errors
+	gem 'pry'
 end
 
