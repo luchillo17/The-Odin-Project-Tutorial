@@ -1,5 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
+  before_action only: [:new, :create] { |controller| @title = 'Sign Up' }
+  before_action only: [:edit, :update] { |controller| @title = 'Edit User: ' + @user.name }
 
   # GET /users
   # GET /users.json
@@ -16,13 +18,13 @@ class UsersController < ApplicationController
 
   # GET /users/new
   def new
-    @title = 'Sign Up'
+    # @title = 'Sign Up'
     @user = User.new
   end
 
   # GET /users/1/edit
   def edit
-    @title = 'Edit User: ' + @user.name
+    # @title = 'Edit User: ' + @user.name
   end
 
   # POST /users
@@ -35,6 +37,7 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: 'User was successfully created.' }
         format.json { render :show, status: :created, location: @user }
       else
+        # @title = 'Sign Up'
         format.html { render :new }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end

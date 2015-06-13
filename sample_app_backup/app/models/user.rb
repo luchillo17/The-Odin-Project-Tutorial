@@ -12,7 +12,7 @@ class User < ActiveRecord::Base
 												length: {minimum: 6}
 
 	has_secure_password
-	 
+
 	before_save{ self.email.downcase! }
 
 	def save(*args)

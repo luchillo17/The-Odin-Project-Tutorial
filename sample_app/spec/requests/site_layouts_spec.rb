@@ -36,9 +36,6 @@ RSpec.describe "SiteLayouts", type: :request do
 			end
 		end
 
-
-
-
 		# it 'get /help' do
 		# 	get help_path
 		# 	expect(response).to have_http_status(:success)

@@ -1,6 +1,6 @@
 GIT
   remote: git://github.com/rails/rails.git
-  revision: 02e6bccbeb108ae0d8d92c84c6fc0b3330af360f
+  revision: 491932b7016fb6ddb8957b0e04a4198827fe7065
   branch: 4-2-stable
   specs:
     actionmailer (4.2.2.beta)
@@ -228,6 +228,8 @@ GEM
     shellany (0.0.1)
     slop (3.6.0)
     spring (1.3.6)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sprockets (3.2.0)
       rack (~> 1.0)
     sprockets-rails (2.3.1)
@@ -280,6 +282,7 @@ DEPENDENCIES
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
   spring
+  spring-commands-rspec
   turbolinks
   uglifier (>= 1.3.0)
   web-console (~> 2.0)

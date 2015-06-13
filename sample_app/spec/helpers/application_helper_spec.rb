@@ -16,8 +16,8 @@ RSpec.describe StaticPagesHelper, type: :helper do
 
   describe 'full title helper' do
     it 'returns valid title' do
-      expect(full_title).to be(base_title)
-      expect(full_title('Help')).to eq("Help | #{base_title}")
+      expect(full_title).to be_eql(base_title)
+      expect(full_title('Help')).to be_eql("Help | #{base_title}")
     end
   end
 end

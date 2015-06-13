@@ -52,6 +52,7 @@ class UsersController < ApplicationController
         format.html { redirect_to @user, notice: 'User was successfully updated.' }
         format.json { render :show, status: :ok, location: @user }
       else
+        @title = 'Edit User'
         format.html { render :edit }
         format.json { render json: @user.errors, status: :unprocessable_entity }
       end
