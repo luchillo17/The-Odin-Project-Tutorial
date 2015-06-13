@@ -12,6 +12,6 @@ RSpec.describe "users/index", type: :view do
 	it "renders a list of users" do
 		render
 		assert_select "tr>td", :text => /user\d+\z/, :count => 2
-		assert_select "tr>td", :text => /@example.com/, :count => 2
+		assert_select "tr>td", :text => /user\d+@example.com/, :count => 2
 	end
 end

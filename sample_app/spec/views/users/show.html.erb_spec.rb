@@ -7,7 +7,7 @@ RSpec.describe "users/show", type: :view do
 
   it "renders attributes in <p>" do
     render
-    expect(rendered).to match(/user\d/)
-    expect(rendered).to match(/@example.com/)
+    expect(rendered).to match(/user\d+/)
+    expect(rendered).to match(/user\d+@example.com/)
   end
 end

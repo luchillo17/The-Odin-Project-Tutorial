@@ -18,7 +18,7 @@ RSpec.describe "SiteLayouts", type: :request do
 		end
 	end
 
-	describe 'correct titles' do
+	describe 'correct page titles' do
 
 		it 'get / or /home' do
 			get root_path
