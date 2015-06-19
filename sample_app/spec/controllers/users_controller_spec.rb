@@ -23,14 +23,16 @@ RSpec.describe UsersController, type: :controller do
 	# This should return the minimal set of attributes required to create a valid
 	# User. As you add validations to User, be sure to
 	# adjust the attributes here as well.
+	let(:admin) { FactoryGirl.create(:admin) }
+
 	let(:valid_attributes) { FactoryGirl.attributes_for(:user)	}
 
 	let(:invalid_attributes) do
-		FactoryGirl.attributes_for(:user,  name:  'stiven',
-															email: 'stiven@gmail..com',
-															password: 'belorofonte',
-															password_confirmation: 'beloro'
-											)
+		FactoryGirl.attributes_for(:user,	:name 									=> 'stiven',
+																			:email									=> 'stiven@gmail..com',
+																			:password								=> 'belorofonte',
+																			:password_confirmation	=> 'beloro'
+															)
 	end
 
 	# This should return the minimal set of values that should be in the session
@@ -41,8 +43,14 @@ RSpec.describe UsersController, type: :controller do
 	describe "GET #index" do
 		it "assigns all users as @users" do
 			user = User.create! valid_attributes
+			log_in_as(user)
 			get :index, {}, valid_session
 			expect(assigns(:users)).to eq([user])
+		end
+
+		it 'redirects to login when not logged in' do
+			get :index, {}, valid_session
+			expect(response).to redirect_to(login_url)
 		end
 	end
 
@@ -64,8 +72,24 @@ RSpec.describe UsersController, type: :controller do
 	describe "GET #edit" do
 		it "assigns the requested user as @user" do
 			user = User.create! valid_attributes
+			log_in_as(user)
 			get :edit, {:id => user.to_param}, valid_session
 			expect(assigns(:user)).to eq(user)
+		end
+
+		it 'redirects to login when not logged in' do
+			user = User.create! valid_attributes
+			get :edit, id: user
+			expect(flash).to_not be_empty
+			expect(response).to redirect_to(login_url)
+		end
+
+		it 'redirects to root when logged as wrong user' do
+			user = User.create! valid_attributes
+			log_in_as(FactoryGirl.create :user)
+			get :edit, id: user
+			expect(flash).to be_empty
+			expect(response).to redirect_to(root_url)
 		end
 	end
 
@@ -114,6 +138,7 @@ RSpec.describe UsersController, type: :controller do
 
 			it "updates the requested user" do
 				user = User.create! valid_attributes
+				log_in_as(user)
 				put :update, {:id => user.to_param, :user => new_attributes}, valid_session
 				user.reload
 				expect(user.name).to eq(new_attributes[:name])
@@ -122,26 +147,53 @@ RSpec.describe UsersController, type: :controller do
 
 			it "assigns the requested user as @user" do
 				user = User.create! valid_attributes
+				log_in_as(user)
 				put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
 				expect(assigns(:user)).to eq(user)
 			end
 
 			it "redirects to the user" do
 				user = User.create! valid_attributes
+				log_in_as(user)
 				put :update, {:id => user.to_param, :user => valid_attributes}, valid_session
 				expect(response).to redirect_to(user)
+			end
+
+			it 'redirects to login when not logged in' do
+				user = User.create! valid_attributes
+				patch :update, id: user, user: valid_attributes
+				expect(flash).to_not be_empty
+				expect(response).to redirect_to(login_url)
+			end
+
+			it 'redirects to root when logged as wrong user' do
+				user = User.create! valid_attributes
+				log_in_as(FactoryGirl.create :user)
+				patch :update, id: user, user: new_attributes
+				expect(flash).to be_empty
+				expect(response).to redirect_to(root_url)
+			end
+
+			it 'avoid editing admin attribute from the web' do
+				user = FactoryGirl.create :user
+				log_in_as(user)
+				expect(user.admin?).to be(false)
+				patch :update, id: user, user: { password: 'password', password_confirmation: 'password', admin: true }
+			  expect(user.reload.admin?).to be(false)
 			end
 		end
 
 		context "with invalid params" do
 			it "assigns the user as @user" do
 				user = User.create! valid_attributes
+				log_in_as(user)
 				put :update, {:id => user.to_param, :user => invalid_attributes}, valid_session
 				expect(assigns(:user)).to eq(user)
 			end
 
 			it "re-renders the 'edit' template" do
 				user = User.create! valid_attributes
+				log_in_as(user)
 				put :update, {:id => user.to_param, :user => invalid_attributes}, valid_session
 				expect(response).to render_template("edit")
 			end
@@ -149,17 +201,30 @@ RSpec.describe UsersController, type: :controller do
 	end
 
 	describe "DELETE #destroy" do
-		it "destroys the requested user" do
-			user = User.create! valid_attributes
-			expect {
-				delete :destroy, {:id => user.to_param}, valid_session
-			}.to change(User, :count).by(-1)
+		context "as admin" do
+			it "destroys the requested user and redirects to the users list" do
+				user = User.create! valid_attributes
+				log_in_as(admin)
+				expect {
+					delete :destroy, {:id => user.to_param}, valid_session
+				}.to change(User, :count).by(-1)
+				expect(response).to redirect_to(users_url)
+			end
 		end
 
-		it "redirects to the users list" do
-			user = User.create! valid_attributes
-			delete :destroy, {:id => user.to_param}, valid_session
-			expect(response).to redirect_to(users_url)
+		context "without admin" do
+			it 'redirects to login when not logged in' do
+				user = User.create! valid_attributes
+				expect { delete :destroy, id: user }.to_not change(User, :count)
+				expect(response).to redirect_to(login_url)
+			end
+
+			it 'does something' do
+				user = User.create! valid_attributes
+				log_in_as(FactoryGirl.create(:user))
+				expect { delete :destroy, id: user }.to_not change(User, :count)
+				expect(response).to redirect_to(root_url)
+			end
 		end
 	end
 

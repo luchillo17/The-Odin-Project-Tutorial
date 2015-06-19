@@ -5,9 +5,9 @@ RSpec.describe "static_pages/home.html.erb", type: :view do
 			it "tests the links in the home directory" do
 				render
 				assert_template 'static_pages/home'
-				assert_select "a:match('href', ?)", "http://www.railstutorial.org", count: 1
-				assert_select "a:match('href', ?)", signup_path, count: 1
-				assert_select "a:match('href', ?)", "http://rubyonrails.org/", count: 1
+				assert_select "a[href=?]", "http://www.railstutorial.org/", count: 1
+				assert_select "a[href=?]", signup_path, count: 1
+				assert_select "a[href=?]", "http://rubyonrails.org/", count: 1
 			end
 		end
 end

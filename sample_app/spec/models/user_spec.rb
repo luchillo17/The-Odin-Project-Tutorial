@@ -9,8 +9,8 @@ RSpec.describe User, type: :model do
 			user@example.com
 			USER@foo.COM
 			A_US-ER@foo.bar.org
-      first.last@foo.jp
-      alice+bob@baz.cn
+			first.last@foo.jp
+			alice+bob@baz.cn
 		]
 	end
 
@@ -57,9 +57,9 @@ RSpec.describe User, type: :model do
 
 		it 'should save as downcase' do
 			user = FactoryGirl.build(:user)
-		  email = user.email.upcase!.dup
-		  user.save
-		  expect(User.first.email).to eq(email.downcase)
+			email = user.email.upcase!.dup
+			user.save
+			expect(User.first.email).to eq(email.downcase)
 		end
 
 		it 'should accept valid addresses' do
@@ -77,22 +77,28 @@ RSpec.describe User, type: :model do
 		end
 
 		it 'should be unique' do
-		  duplicate_user = user.dup
-		  duplicate_user.email.upcase!
-		  user.save
-		  expect(duplicate_user).not_to be_valid
+			duplicate_user = user.dup
+			duplicate_user.email.upcase!
+			user.save
+			expect(duplicate_user).not_to be_valid
 		end
 	end
 
 	describe 'password validation' do
-	  it 'should be present (nonblank)' do
-	    user.password = ' '*6
-	    expect(user).not_to be_valid
-	  end
+		it 'should be present (nonblank)' do
+			user.password = ' '*6
+			expect(user).not_to be_valid
+		end
 
-	  it 'should have minimum length' do
-	    user.password = 'a' * 5
-	    expect(user).not_to be_valid
-	  end
+		it 'should have minimum length' do
+			user.password = 'a' * 5
+			expect(user).not_to be_valid
+		end
+	end
+
+	describe 'authenticated?' do
+		it 'returns false for user with nil token_digest' do
+			expect(user.authenticated?('')).to be false
+		end
 	end
 end

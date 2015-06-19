@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe "SiteLayouts", type: :request do
 
 	let(:base_title) { "Ruby on Rails Tutorial Sample App" }
+	let(:user) { FactoryGirl.create(:user) }
 
 	describe "application layout" do
 		it "has valid links" do
@@ -13,6 +14,11 @@ RSpec.describe "SiteLayouts", type: :request do
 			assert_select "a[href=?]", help_path
 			assert_select "a[href=?]", about_path
 			assert_select "a[href=?]", contact_path
+			assert_select "a[href=?]", login_path
+			log_in_as(user)
+			follow_redirect!
+			assert_select "a[href=?]", users_path
+			assert_select "a[href=?]", user_path(user)
 			get signup_path
 			assert_select 'title', full_title("Sign Up")
 		end

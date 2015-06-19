@@ -18,6 +18,7 @@ RSpec.describe "UsersSignups", type: :request do
 				expect(response).to have_http_status(200)
 				expect{	post_via_redirect users_path, user: valid_user }.to change(User, :count).by(1)
 				assert_template 'users/show'
+				expect(is_logged_in?).to be(true)
 				expect(flash).to_not be_empty
 				assert_select 'div.alert-success'
 			end
